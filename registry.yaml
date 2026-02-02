@@ -47,6 +47,30 @@ etl:
     tags: [sparse, bm25, hybrid-search]
     requires_api_key: false
 
+  - slug: multimodal-search
+    title: Multimodal search (text + images)
+    notebook: notebooks/etl/multimodal_search.ipynb
+    tags: [multimodal, clip, cross-modal]
+    requires_api_key: false
+
+  - slug: semantic-chunking
+    title: Semantic chunking for better RAG
+    notebook: notebooks/etl/semantic_chunking.ipynb
+    tags: [chunking, rag, semantic]
+    requires_api_key: false
+
+  - slug: code-search
+    title: Semantic code search
+    notebook: notebooks/etl/code_search.ipynb
+    tags: [code, search, developer-tools]
+    requires_api_key: false
+
+  - slug: recommendation-system
+    title: Product recommendation system
+    notebook: notebooks/etl/recommendation_system.ipynb
+    tags: [recommendations, hybrid-search, e-commerce]
+    requires_api_key: false
+
 agents:
   - slug: rag-agent
     title: RAG Agent with Qdrant
@@ -59,6 +83,30 @@ agents:
     notebook: notebooks/agents/dedup_agent.ipynb
     tags: [dedup, maintenance, similarity]
     requires_api_key: false
+
+  - slug: crewai-qdrant
+    title: Multi-Agent team with CrewAI + Qdrant
+    notebook: notebooks/agents/crewai_qdrant.ipynb
+    tags: [crewai, multi-agent, orchestration]
+    requires_api_key: true
+
+  - slug: llamaindex-qdrant
+    title: LlamaIndex + Qdrant RAG pipeline
+    notebook: notebooks/agents/llamaindex_qdrant.ipynb
+    tags: [llamaindex, rag, data-connectors]
+    requires_api_key: true
+
+  - slug: langchain-qdrant
+    title: LangChain + Qdrant conversational RAG
+    notebook: notebooks/agents/langchain_qdrant.ipynb
+    tags: [langchain, rag, conversational]
+    requires_api_key: true
+
+  - slug: agentic-memory
+    title: Agentic memory system
+    notebook: notebooks/agents/agentic_memory.ipynb
+    tags: [memory, personalization, sessions]
+    requires_api_key: true
 
 configs:
   - slug: hnsw-tuning

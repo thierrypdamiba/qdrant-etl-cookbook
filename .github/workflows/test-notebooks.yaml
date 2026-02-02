@@ -20,6 +20,10 @@ jobs:
           - notebooks/etl/postgres_to_qdrant.ipynb
           - notebooks/etl/web_scrape_to_qdrant.ipynb
           - notebooks/agents/dedup_agent.ipynb
+          - notebooks/etl/multimodal_search.ipynb
+          - notebooks/etl/semantic_chunking.ipynb
+          - notebooks/etl/code_search.ipynb
+          - notebooks/etl/recommendation_system.ipynb
           - notebooks/configs/hnsw_tuning.ipynb
           - notebooks/configs/payload_indexes.ipynb
           - notebooks/configs/quantization.ipynb
@@ -82,6 +86,10 @@ jobs:
       matrix:
         notebook:
           - notebooks/agents/rag_agent.ipynb
+          - notebooks/agents/agentic_memory.ipynb
+          - notebooks/agents/crewai_qdrant.ipynb
+          - notebooks/agents/llamaindex_qdrant.ipynb
+          - notebooks/agents/langchain_qdrant.ipynb
       fail-fast: false
 
     steps:
