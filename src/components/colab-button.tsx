@@ -20,7 +20,7 @@ export function ColabButton({ notebook }: { notebook: string }) {
         href={githubUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 bg-white/10 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-white/20 transition-colors"
+        className="inline-flex items-center gap-2 bg-[var(--bg-secondary)] text-[var(--fg)] text-sm font-medium px-4 py-2 rounded-lg hover:bg-[var(--card-border)] transition-colors"
       >
         View on GitHub
       </a>

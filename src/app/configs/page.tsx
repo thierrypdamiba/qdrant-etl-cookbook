@@ -1,11 +1,13 @@
-import { configs } from "@/data/configs";
+import { getConfigs } from "@/lib/registry";
 import { RecipeCard } from "@/components/recipe-card";
 
 export default function ConfigsPage() {
+  const configs = getConfigs();
+
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <h1 className="text-3xl font-bold">Qdrant Configs</h1>
+        <h1 className="text-3xl font-bold text-[var(--fg)]">Qdrant Configs</h1>
         <p className="text-[var(--muted)]">
           Production-ready configuration patterns. Indexing, quantization,
           multi-tenancy, backups, and deployment.

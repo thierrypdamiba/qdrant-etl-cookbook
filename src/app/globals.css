@@ -1,22 +1,72 @@
 @import "tailwindcss";
 
+/* Qdrant Official Branding */
 :root {
-  --bg: #0a0a0a;
-  --fg: #ededed;
+  --qdrant-red: #dc244c;
+  --qdrant-dark-red: #9e0d38;
+  --qdrant-pink: #ff516b;
+  --qdrant-navy: #161e33;
+  --qdrant-gray: #717c99;
+  --qdrant-light: #f0f3fa;
+}
+
+/* Light mode (default) */
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-secondary: #f0f3fa;
+  --fg: #161e33;
+  --fg-secondary: #717c99;
   --accent: #dc244c;
-  --accent-hover: #ff3366;
-  --card: #141414;
-  --card-border: #222;
-  --muted: #888;
+  --accent-hover: #ff516b;
+  --card: #ffffff;
+  --card-border: #e2e6ef;
+  --card-hover-border: #dc244c33;
+  --muted: #717c99;
+  --code-bg: #f0f3fa;
+  --code-border: #e2e6ef;
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --badge-bg: #dc244c10;
+  --badge-text: #dc244c;
+  --tag-bg: #f0f3fa;
+  --tag-text: #717c99;
+}
+
+/* Dark mode */
+[data-theme="dark"] {
+  --bg: #0e1424;
+  --bg-secondary: #161e33;
+  --fg: #f0f3fa;
+  --fg-secondary: #b4bacc;
+  --accent: #dc244c;
+  --accent-hover: #ff516b;
+  --card: #161e33;
+  --card-border: #252d45;
+  --card-hover-border: #dc244c55;
+  --muted: #b4bacc;
+  --code-bg: #0e1424;
+  --code-border: #252d45;
+  --nav-bg: rgba(14, 20, 36, 0.85);
+  --badge-bg: #dc244c20;
+  --badge-text: #ff516b;
+  --tag-bg: #252d45;
+  --tag-text: #b4bacc;
 }
 
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: "Satoshi", "Helvetica Neue", "Noto Sans", system-ui, sans-serif;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 ::selection {
   background: var(--accent);
   color: white;
+}
+
+/* Smooth transitions for themed elements */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
 }

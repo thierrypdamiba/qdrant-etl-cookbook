@@ -17,9 +17,9 @@ export function RecipeCard({
   return (
     <Link
       href={`${basePath}/${item.slug}`}
-      className="block bg-[var(--card)] border border-[var(--card-border)] rounded-lg p-5 hover:border-[var(--accent)]/50 transition-colors group"
+      className="block bg-[var(--card)] border border-[var(--card-border)] rounded-lg p-5 hover:border-[var(--card-hover-border)] transition-colors group"
     >
-      <h3 className="font-semibold text-white group-hover:text-[var(--accent)] transition-colors">
+      <h3 className="font-semibold text-[var(--fg)] group-hover:text-[var(--accent)] transition-colors">
         {item.title}
       </h3>
       <p className="text-sm text-[var(--muted)] mt-2 line-clamp-2">
@@ -29,7 +29,7 @@ export function RecipeCard({
         {item.tags.map((t) => (
           <span
             key={t}
-            className="text-xs bg-white/5 text-[var(--muted)] px-2 py-0.5 rounded"
+            className="text-xs bg-[var(--tag-bg)] text-[var(--tag-text)] px-2 py-0.5 rounded"
           >
             {t}
           </span>

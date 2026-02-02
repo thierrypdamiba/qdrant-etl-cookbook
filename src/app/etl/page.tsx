@@ -1,12 +1,14 @@
-import { etlRecipes } from "@/data/etl-recipes";
+import { getETLRecipes } from "@/lib/registry";
 import { RecipeCard } from "@/components/recipe-card";
 import { SearchBar } from "@/components/search-bar";
 
 export default function ETLPage() {
+  const etlRecipes = getETLRecipes();
+
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <h1 className="text-3xl font-bold">ETL Recipes</h1>
+        <h1 className="text-3xl font-bold text-[var(--fg)]">ETL Recipes</h1>
         <p className="text-[var(--muted)]">
           Copy-paste recipes for loading any data type into Qdrant.
         </p>

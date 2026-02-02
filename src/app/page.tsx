@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { SearchBar } from "@/components/search-bar";
-import { etlRecipes } from "@/data/etl-recipes";
-import { agents } from "@/data/agents";
-import { configs } from "@/data/configs";
+import { getETLRecipes, getAgents, getConfigs } from "@/lib/registry";
 import { RecipeCard } from "@/components/recipe-card";
 
 export default function Home() {
+  const etlRecipes = getETLRecipes();
+  const agents = getAgents();
+  const configs = getConfigs();
+
   return (
     <div className="space-y-16">
       <section className="text-center space-y-6 py-12">
-        <h1 className="text-5xl font-bold tracking-tight">
+        <h1 className="text-5xl font-bold tracking-tight text-[var(--fg)]">
           Qdrant ETL Cookbook
         </h1>
         <p className="text-lg text-[var(--muted)] max-w-2xl mx-auto">
@@ -21,7 +23,7 @@ export default function Home() {
 
       <section className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold">ETL Recipes</h2>
+          <h2 className="text-2xl font-semibold text-[var(--fg)]">ETL Recipes</h2>
           <Link
             href="/etl"
             className="text-sm text-[var(--accent)] hover:text-[var(--accent-hover)]"
@@ -38,7 +40,7 @@ export default function Home() {
 
       <section className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold">Agents</h2>
+          <h2 className="text-2xl font-semibold text-[var(--fg)]">Agents</h2>
           <Link
             href="/agents"
             className="text-sm text-[var(--accent)] hover:text-[var(--accent-hover)]"
@@ -55,7 +57,7 @@ export default function Home() {
 
       <section className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold">Qdrant Configs</h2>
+          <h2 className="text-2xl font-semibold text-[var(--fg)]">Qdrant Configs</h2>
           <Link
             href="/configs"
             className="text-sm text-[var(--accent)] hover:text-[var(--accent-hover)]"

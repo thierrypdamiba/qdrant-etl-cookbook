@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
-import { etlRecipes } from "@/data/etl-recipes";
+import { getETLRecipes } from "@/lib/registry";
 import { CodeBlock } from "@/components/code-block";
 import { ColabButton } from "@/components/colab-button";
 import Link from "next/link";
 
 export function generateStaticParams() {
-  return etlRecipes.map((r) => ({ slug: r.slug }));
+  return getETLRecipes().map((r) => ({ slug: r.slug }));
 }
 
 export default async function ETLDetailPage({
@@ -14,7 +14,7 @@ export default async function ETLDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const recipe = etlRecipes.find((r) => r.slug === slug);
+  const recipe = getETLRecipes().find((r) => r.slug === slug);
   if (!recipe) notFound();
 
   return (
@@ -22,7 +22,7 @@ export default async function ETLDetailPage({
       <div>
         <Link
           href="/etl"
-          className="text-sm text-[var(--muted)] hover:text-white"
+          className="text-sm text-[var(--muted)] hover:text-[var(--fg)]"
         >
           ← Back to recipes
         </Link>
@@ -32,13 +32,13 @@ export default async function ETLDetailPage({
           {recipe.tags.map((t) => (
             <span
               key={t}
-              className="text-xs bg-[var(--accent)]/10 text-[var(--accent)] px-2 py-0.5 rounded"
+              className="text-xs bg-[var(--badge-bg)] text-[var(--badge-text)] px-2 py-0.5 rounded"
             >
               {t}
             </span>
           ))}
         </div>
-        <h1 className="text-3xl font-bold">{recipe.title}</h1>
+        <h1 className="text-3xl font-bold text-[var(--fg)]">{recipe.title}</h1>
         <p className="text-[var(--muted)]">{recipe.description}</p>
         <ColabButton notebook={recipe.notebook} />
       </div>

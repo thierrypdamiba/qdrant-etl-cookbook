@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
-import { agents } from "@/data/agents";
+import { getAgents } from "@/lib/registry";
 import { CodeBlock } from "@/components/code-block";
 import { ColabButton } from "@/components/colab-button";
 import Link from "next/link";
 
 export function generateStaticParams() {
-  return agents.map((a) => ({ slug: a.slug }));
+  return getAgents().map((a) => ({ slug: a.slug }));
 }
 
 export default async function AgentDetailPage({
@@ -14,7 +14,7 @@ export default async function AgentDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const agent = agents.find((a) => a.slug === slug);
+  const agent = getAgents().find((a) => a.slug === slug);
   if (!agent) notFound();
 
   return (
@@ -22,7 +22,7 @@ export default async function AgentDetailPage({
       <div>
         <Link
           href="/agents"
-          className="text-sm text-[var(--muted)] hover:text-white"
+          className="text-sm text-[var(--muted)] hover:text-[var(--fg)]"
         >
           ← Back to agents
         </Link>
@@ -32,13 +32,13 @@ export default async function AgentDetailPage({
           {agent.tags.map((t) => (
             <span
               key={t}
-              className="text-xs bg-[var(--accent)]/10 text-[var(--accent)] px-2 py-0.5 rounded"
+              className="text-xs bg-[var(--badge-bg)] text-[var(--badge-text)] px-2 py-0.5 rounded"
             >
               {t}
             </span>
           ))}
         </div>
-        <h1 className="text-3xl font-bold">{agent.title}</h1>
+        <h1 className="text-3xl font-bold text-[var(--fg)]">{agent.title}</h1>
         <p className="text-[var(--muted)]">{agent.description}</p>
         <ColabButton notebook={agent.notebook} />
       </div>
