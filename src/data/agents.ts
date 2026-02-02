@@ -159,12 +159,14 @@ def find_duplicates(
             break
 
         for record in records:
-            similar = client.search(
+            similar_resp = client.query_points(
                 collection_name=collection,
-                query_vector=record.vector,
+                query=record.vector,
                 limit=5,
                 score_threshold=threshold,
             )
+
+            similar = similar_resp.points
 
             for match in similar:
                 if match.id != record.id and match.id > record.id:

@@ -112,9 +112,9 @@ client.create_payload_index(
 # Now you can filter efficiently
 from qdrant_client.models import Filter, FieldCondition, MatchValue, Range
 
-results = client.search(
+results = client.query_points(
     collection_name="products",
-    query_vector=[0.1] * 384,
+    query=[0.1] * 384,
     query_filter=Filter(
         must=[
             FieldCondition(key="category", match=MatchValue(value="electronics")),
@@ -187,9 +187,9 @@ client.create_collection(
 )
 
 # Search with quantization oversampling for better accuracy
-results = client.search(
+results = client.query_points(
     collection_name="scalar_quantized",
-    query_vector=[0.1] * 768,
+    query=[0.1] * 768,
     search_params=SearchParams(
         quantization=QuantizationSearchParams(
             ignore=False,
@@ -248,9 +248,9 @@ def upsert_for_tenant(tenant_id: str, points: list[dict]):
 
 # Search scoped to a single tenant
 def search_for_tenant(tenant_id: str, query_vector: list[float], limit: int = 10):
-    return client.search(
+    return client.query_points(
         collection_name="multi_tenant",
-        query_vector=query_vector,
+        query=query_vector,
         query_filter=Filter(
             must=[
                 FieldCondition(

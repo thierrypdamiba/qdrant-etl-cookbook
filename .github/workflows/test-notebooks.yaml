@@ -16,9 +16,9 @@ jobs:
           - notebooks/etl/csv_to_qdrant.ipynb
           - notebooks/etl/json_to_qdrant.ipynb
           - notebooks/etl/pdf_to_qdrant.ipynb
-          - notebooks/etl/fastembed_to_qdrant.ipynb
           - notebooks/etl/sparse_vectors_bm25.ipynb
           - notebooks/etl/postgres_to_qdrant.ipynb
+          - notebooks/etl/web_scrape_to_qdrant.ipynb
           - notebooks/agents/dedup_agent.ipynb
           - notebooks/configs/hnsw_tuning.ipynb
           - notebooks/configs/payload_indexes.ipynb
@@ -35,7 +35,7 @@ jobs:
       - name: install dependencies
         run: |
           pip install jupyter nbconvert nbclient
-          pip install qdrant-client[fastembed] sentence-transformers
+          pip install qdrant-client sentence-transformers
           pip install pandas PyMuPDF beautifulsoup4 requests
           pip install transformers torch pillow
 
@@ -46,7 +46,35 @@ jobs:
             --ExecutePreprocessor.kernel_name=python3 \
             "${{ matrix.notebook }}"
 
-  # Notebooks requiring API keys are tested separately
+  # Notebooks using fastembed convenience methods (pinned client version)
+  test-fastembed:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        notebook:
+          - notebooks/etl/fastembed_to_qdrant.ipynb
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: |
+          pip install jupyter nbconvert nbclient
+          pip install "qdrant-client[fastembed]>=1.13,<1.16"
+
+      - name: run notebook
+        run: |
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=300 \
+            --ExecutePreprocessor.kernel_name=python3 \
+            "${{ matrix.notebook }}"
+
+  # Notebooks requiring API keys
   test-with-keys:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -66,7 +94,7 @@ jobs:
       - name: install dependencies
         run: |
           pip install jupyter nbconvert nbclient
-          pip install "qdrant-client[fastembed]" openai
+          pip install "qdrant-client[fastembed]>=1.13,<1.16" openai
 
       - name: run notebook
         env:
