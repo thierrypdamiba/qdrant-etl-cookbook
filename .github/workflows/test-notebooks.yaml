@@ -1,0 +1,78 @@
+name: test notebooks
+
+on:
+  push:
+    branches: [main]
+    paths: ["notebooks/**"]
+  pull_request:
+    paths: ["notebooks/**"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        notebook:
+          - notebooks/etl/csv_to_qdrant.ipynb
+          - notebooks/etl/json_to_qdrant.ipynb
+          - notebooks/etl/pdf_to_qdrant.ipynb
+          - notebooks/etl/fastembed_to_qdrant.ipynb
+          - notebooks/etl/sparse_vectors_bm25.ipynb
+          - notebooks/etl/postgres_to_qdrant.ipynb
+          - notebooks/agents/dedup_agent.ipynb
+          - notebooks/configs/hnsw_tuning.ipynb
+          - notebooks/configs/payload_indexes.ipynb
+          - notebooks/configs/quantization.ipynb
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: |
+          pip install jupyter nbconvert nbclient
+          pip install qdrant-client[fastembed] sentence-transformers
+          pip install pandas PyMuPDF beautifulsoup4 requests
+          pip install transformers torch pillow
+
+      - name: run notebook
+        run: |
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=300 \
+            --ExecutePreprocessor.kernel_name=python3 \
+            "${{ matrix.notebook }}"
+
+  # Notebooks requiring API keys are tested separately
+  test-with-keys:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    strategy:
+      matrix:
+        notebook:
+          - notebooks/agents/rag_agent.ipynb
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: install dependencies
+        run: |
+          pip install jupyter nbconvert nbclient
+          pip install "qdrant-client[fastembed]" openai
+
+      - name: run notebook
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=300 \
+            --ExecutePreprocessor.kernel_name=python3 \
+            "${{ matrix.notebook }}"

@@ -5,6 +5,7 @@ export interface Recipe {
   tags: string[];
   category: string;
   code: string;
+  notebook: string;
 }
 
 export const etlRecipes: Recipe[] = [
@@ -15,6 +16,7 @@ export const etlRecipes: Recipe[] = [
       "Read a CSV file, generate embeddings with sentence-transformers, and upsert into a Qdrant collection with batching.",
     tags: ["csv", "pandas", "sentence-transformers"],
     category: "Data Loading",
+    notebook: "notebooks/etl/csv_to_qdrant.ipynb",
     code: `import pandas as pd
 from qdrant_client import QdrantClient
 from qdrant_client.models import PointStruct, VectorParams, Distance
@@ -57,6 +59,7 @@ print(f"Loaded {len(df)} records into Qdrant")`,
       "Stream JSON lines into Qdrant with payload filtering support. Handles nested objects and large files.",
     tags: ["json", "jsonl", "streaming"],
     category: "Data Loading",
+    notebook: "notebooks/etl/json_to_qdrant.ipynb",
     code: `import json
 from qdrant_client import QdrantClient
 from qdrant_client.models import PointStruct, VectorParams, Distance
@@ -93,6 +96,7 @@ if points:
       "Parse PDFs with PyMuPDF, chunk text with overlap, embed, and store in Qdrant for RAG pipelines.",
     tags: ["pdf", "chunking", "rag"],
     category: "Data Loading",
+    notebook: "notebooks/etl/pdf_to_qdrant.ipynb",
     code: `import fitz  # PyMuPDF
 from qdrant_client import QdrantClient
 from qdrant_client.models import PointStruct, VectorParams, Distance
@@ -141,6 +145,7 @@ print(f"Loaded {point_id} chunks from PDF")`,
       "Generate image embeddings using OpenAI CLIP and store them in Qdrant for visual similarity search.",
     tags: ["images", "clip", "multimodal"],
     category: "Embeddings",
+    notebook: "notebooks/etl/images_clip_to_qdrant.ipynb",
     code: `import os
 from PIL import Image
 from transformers import CLIPModel, CLIPProcessor
@@ -184,6 +189,7 @@ print(f"Indexed {len(points)} images")`,
       "Scrape web pages with BeautifulSoup, clean and chunk HTML content, then load into Qdrant.",
     tags: ["scraping", "beautifulsoup", "html"],
     category: "Data Loading",
+    notebook: "notebooks/etl/web_scrape_to_qdrant.ipynb",
     code: `import requests
 from bs4 import BeautifulSoup
 from qdrant_client import QdrantClient
@@ -230,6 +236,7 @@ client.upsert(collection_name="web_pages", points=points)`,
       "Extract records from PostgreSQL, embed text columns, and sync into Qdrant with incremental updates.",
     tags: ["postgres", "sql", "incremental"],
     category: "Data Loading",
+    notebook: "notebooks/etl/postgres_to_qdrant.ipynb",
     code: `import psycopg2
 from qdrant_client import QdrantClient
 from qdrant_client.models import PointStruct, VectorParams, Distance
@@ -278,6 +285,7 @@ conn.close()`,
       "Use Qdrant's built-in FastEmbed for lightweight, fast embedding generation without external dependencies.",
     tags: ["fastembed", "lightweight", "built-in"],
     category: "Embeddings",
+    notebook: "notebooks/etl/fastembed_to_qdrant.ipynb",
     code: `from qdrant_client import QdrantClient
 
 client = QdrantClient(url="http://localhost:6333")
@@ -319,6 +327,7 @@ for r in results:
       "Implement hybrid search using sparse BM25 vectors alongside dense embeddings in Qdrant.",
     tags: ["sparse", "bm25", "hybrid-search"],
     category: "Advanced",
+    notebook: "notebooks/etl/sparse_vectors_bm25.ipynb",
     code: `from qdrant_client import QdrantClient, models
 
 client = QdrantClient(url="http://localhost:6333")

@@ -1,0 +1,80 @@
+etl:
+  - slug: csv-to-qdrant
+    title: Load CSV into Qdrant
+    notebook: notebooks/etl/csv_to_qdrant.ipynb
+    tags: [csv, pandas, sentence-transformers]
+    requires_api_key: false
+
+  - slug: json-to-qdrant
+    title: Load JSON / JSONL into Qdrant
+    notebook: notebooks/etl/json_to_qdrant.ipynb
+    tags: [json, jsonl, streaming]
+    requires_api_key: false
+
+  - slug: pdf-to-qdrant
+    title: Extract PDF text and load into Qdrant
+    notebook: notebooks/etl/pdf_to_qdrant.ipynb
+    tags: [pdf, chunking, rag]
+    requires_api_key: false
+
+  - slug: images-clip-to-qdrant
+    title: Image embeddings with CLIP
+    notebook: notebooks/etl/images_clip_to_qdrant.ipynb
+    tags: [images, clip, multimodal]
+    requires_api_key: false
+
+  - slug: web-scrape-to-qdrant
+    title: Web scraping to Qdrant
+    notebook: notebooks/etl/web_scrape_to_qdrant.ipynb
+    tags: [scraping, beautifulsoup, html]
+    requires_api_key: false
+
+  - slug: postgres-to-qdrant
+    title: PostgreSQL to Qdrant
+    notebook: notebooks/etl/postgres_to_qdrant.ipynb
+    tags: [postgres, sql, incremental]
+    requires_api_key: false
+
+  - slug: fastembed-to-qdrant
+    title: FastEmbed with Qdrant
+    notebook: notebooks/etl/fastembed_to_qdrant.ipynb
+    tags: [fastembed, lightweight, built-in]
+    requires_api_key: false
+
+  - slug: sparse-vectors-bm25
+    title: Sparse vectors with BM25
+    notebook: notebooks/etl/sparse_vectors_bm25.ipynb
+    tags: [sparse, bm25, hybrid-search]
+    requires_api_key: false
+
+agents:
+  - slug: rag-agent
+    title: RAG Agent with Qdrant
+    notebook: notebooks/agents/rag_agent.ipynb
+    tags: [rag, openai, retrieval]
+    requires_api_key: true
+
+  - slug: dedup-agent
+    title: Deduplication Agent
+    notebook: notebooks/agents/dedup_agent.ipynb
+    tags: [dedup, maintenance, similarity]
+    requires_api_key: false
+
+configs:
+  - slug: hnsw-tuning
+    title: HNSW Index Tuning
+    notebook: notebooks/configs/hnsw_tuning.ipynb
+    tags: [hnsw, indexing, performance]
+    requires_api_key: false
+
+  - slug: payload-indexes
+    title: Payload Indexes
+    notebook: notebooks/configs/payload_indexes.ipynb
+    tags: [payload, filtering, indexes]
+    requires_api_key: false
+
+  - slug: quantization
+    title: Quantization Settings
+    notebook: notebooks/configs/quantization.ipynb
+    tags: [quantization, memory, optimization]
+    requires_api_key: false

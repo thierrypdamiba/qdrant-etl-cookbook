@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { configs } from "@/data/configs";
 import { CodeBlock } from "@/components/code-block";
+import { ColabButton } from "@/components/colab-button";
 import Link from "next/link";
 
 export function generateStaticParams() {
@@ -39,6 +40,7 @@ export default async function ConfigDetailPage({
         </div>
         <h1 className="text-3xl font-bold">{config.title}</h1>
         <p className="text-[var(--muted)]">{config.description}</p>
+        <ColabButton notebook={config.notebook} />
       </div>
       <CodeBlock code={config.code} language={config.language} />
     </div>

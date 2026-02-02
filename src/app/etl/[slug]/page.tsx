@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { etlRecipes } from "@/data/etl-recipes";
 import { CodeBlock } from "@/components/code-block";
+import { ColabButton } from "@/components/colab-button";
 import Link from "next/link";
 
 export function generateStaticParams() {
@@ -39,6 +40,7 @@ export default async function ETLDetailPage({
         </div>
         <h1 className="text-3xl font-bold">{recipe.title}</h1>
         <p className="text-[var(--muted)]">{recipe.description}</p>
+        <ColabButton notebook={recipe.notebook} />
       </div>
       <CodeBlock code={recipe.code} language="python" />
     </div>

@@ -5,6 +5,7 @@ export interface Config {
   tags: string[];
   code: string;
   language: string;
+  notebook: string;
 }
 
 export const configs: Config[] = [
@@ -15,6 +16,7 @@ export const configs: Config[] = [
       "Configure HNSW parameters for optimal recall/speed trade-offs. Covers m, ef_construct, and on-disk settings.",
     tags: ["hnsw", "indexing", "performance"],
     language: "python",
+    notebook: "notebooks/configs/hnsw_tuning.ipynb",
     code: `from qdrant_client import QdrantClient
 from qdrant_client.models import (
     VectorParams,
@@ -73,6 +75,7 @@ client.update_collection(
       "Set up payload indexes for fast filtering. Covers keyword, integer, float, geo, and datetime indexes.",
     tags: ["payload", "filtering", "indexes"],
     language: "python",
+    notebook: "notebooks/configs/payload_indexes.ipynb",
     code: `from qdrant_client import QdrantClient
 from qdrant_client.models import PayloadSchemaType
 
@@ -128,15 +131,20 @@ results = client.search(
       "Reduce memory usage with scalar, binary, and product quantization. Trade-offs between memory, speed, and accuracy.",
     tags: ["quantization", "memory", "optimization"],
     language: "python",
+    notebook: "notebooks/configs/quantization.ipynb",
     code: `from qdrant_client import QdrantClient
 from qdrant_client.models import (
     VectorParams,
     Distance,
+    ScalarQuantization,
     ScalarQuantizationConfig,
     ScalarType,
+    BinaryQuantization,
     BinaryQuantizationConfig,
+    ProductQuantization,
     ProductQuantizationConfig,
     CompressionRatio,
+    SearchParams,
     QuantizationSearchParams,
 )
 
@@ -146,10 +154,12 @@ client = QdrantClient(url="http://localhost:6333")
 client.create_collection(
     collection_name="scalar_quantized",
     vectors_config=VectorParams(size=768, distance=Distance.COSINE),
-    quantization_config=ScalarQuantizationConfig(
-        type=ScalarType.INT8,
-        quantile=0.99,       # clip outliers
-        always_ram=True,     # keep quantized vectors in RAM
+    quantization_config=ScalarQuantization(
+        scalar=ScalarQuantizationConfig(
+            type=ScalarType.INT8,
+            quantile=0.99,       # clip outliers
+            always_ram=True,     # keep quantized vectors in RAM
+        ),
     ),
 )
 
@@ -157,8 +167,10 @@ client.create_collection(
 client.create_collection(
     collection_name="binary_quantized",
     vectors_config=VectorParams(size=1536, distance=Distance.COSINE),
-    quantization_config=BinaryQuantizationConfig(
-        always_ram=True,
+    quantization_config=BinaryQuantization(
+        binary=BinaryQuantizationConfig(
+            always_ram=True,
+        ),
     ),
 )
 
@@ -166,9 +178,11 @@ client.create_collection(
 client.create_collection(
     collection_name="product_quantized",
     vectors_config=VectorParams(size=768, distance=Distance.COSINE),
-    quantization_config=ProductQuantizationConfig(
-        compression=CompressionRatio.X16,
-        always_ram=True,
+    quantization_config=ProductQuantization(
+        product=ProductQuantizationConfig(
+            compression=CompressionRatio.X16,
+            always_ram=True,
+        ),
     ),
 )
 
@@ -176,10 +190,12 @@ client.create_collection(
 results = client.search(
     collection_name="scalar_quantized",
     query_vector=[0.1] * 768,
-    search_params=QuantizationSearchParams(
-        ignore=False,
-        rescore=True,
-        oversampling=2.0,  # fetch 2x candidates, rescore with full vectors
+    search_params=SearchParams(
+        quantization=QuantizationSearchParams(
+            ignore=False,
+            rescore=True,
+            oversampling=2.0,  # fetch 2x candidates, rescore with full vectors
+        ),
     ),
     limit=10,
 )`,
@@ -191,6 +207,7 @@ results = client.search(
       "Configure Qdrant for multi-tenant applications using payload-based tenant isolation.",
     tags: ["multi-tenant", "isolation", "production"],
     language: "python",
+    notebook: "",
     code: `from qdrant_client import QdrantClient
 from qdrant_client.models import (
     VectorParams,
@@ -255,6 +272,7 @@ results = search_for_tenant("tenant_abc", query_vector=[0.1] * 384)`,
       "Create and restore collection snapshots. Set up automated backup schedules for production.",
     tags: ["snapshots", "backup", "disaster-recovery"],
     language: "python",
+    notebook: "",
     code: `from qdrant_client import QdrantClient
 import os
 from datetime import datetime
@@ -270,19 +288,22 @@ snapshots = client.list_snapshots(collection_name="my_collection")
 for snap in snapshots:
     print(f"  {snap.name} | size: {snap.size} | created: {snap.creation_time}")
 
-# Download a snapshot to local disk
-snapshot_path = client.download_snapshot(
-    collection_name="my_collection",
-    snapshot_name=snapshot_info.name,
-    path="./backups/",
-)
-print(f"Downloaded to: {snapshot_path}")
+# Download a snapshot via REST API
+import requests
 
-# Restore from snapshot (creates or replaces collection)
-# Upload the snapshot file
+snapshot_url = f"http://localhost:6333/collections/my_collection/snapshots/{snapshot_info.name}"
+response = requests.get(snapshot_url, stream=True)
+os.makedirs("./backups", exist_ok=True)
+backup_path = f"./backups/{snapshot_info.name}"
+with open(backup_path, "wb") as f:
+    for chunk in response.iter_content(chunk_size=8192):
+        f.write(chunk)
+print(f"Downloaded to: {backup_path}")
+
+# Restore from snapshot (upload via REST API)
 client.recover_snapshot(
     collection_name="my_collection",
-    location=f"./backups/{snapshot_info.name}",
+    location=f"file:///path/to/backups/{snapshot_info.name}",
 )
 
 # Full storage snapshot (all collections)
@@ -302,6 +323,7 @@ client.delete_snapshot(
       "Production-ready Docker Compose configuration with clustering, TLS, and persistent storage.",
     tags: ["docker", "production", "clustering"],
     language: "yaml",
+    notebook: "",
     code: `version: "3.8"
 
 services:

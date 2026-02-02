@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { agents } from "@/data/agents";
 import { CodeBlock } from "@/components/code-block";
+import { ColabButton } from "@/components/colab-button";
 import Link from "next/link";
 
 export function generateStaticParams() {
@@ -39,6 +40,7 @@ export default async function AgentDetailPage({
         </div>
         <h1 className="text-3xl font-bold">{agent.title}</h1>
         <p className="text-[var(--muted)]">{agent.description}</p>
+        <ColabButton notebook={agent.notebook} />
       </div>
       <CodeBlock code={agent.code} language="python" />
     </div>

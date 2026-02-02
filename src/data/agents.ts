@@ -4,6 +4,7 @@ export interface Agent {
   description: string;
   tags: string[];
   code: string;
+  notebook: string;
 }
 
 export const agents: Agent[] = [
@@ -13,6 +14,7 @@ export const agents: Agent[] = [
     description:
       "A retrieval-augmented generation agent that queries Qdrant for context and generates answers using an LLM.",
     tags: ["rag", "openai", "retrieval"],
+    notebook: "notebooks/agents/rag_agent.ipynb",
     code: `import os
 from openai import OpenAI
 from qdrant_client import QdrantClient
@@ -64,6 +66,7 @@ print(result["answer"])`,
     description:
       "Watches a directory for new files and automatically ingests them into Qdrant with the right embedding model.",
     tags: ["watchdog", "auto-ingest", "pipeline"],
+    notebook: "",
     code: `import os
 import time
 from watchdog.observers import Observer
@@ -128,6 +131,7 @@ observer.join()`,
     description:
       "Finds and removes near-duplicate entries in a Qdrant collection using vector similarity thresholds.",
     tags: ["dedup", "maintenance", "similarity"],
+    notebook: "notebooks/agents/dedup_agent.ipynb",
     code: `from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, FieldCondition, MatchValue
 
@@ -180,9 +184,10 @@ def remove_duplicates(collection: str, threshold: float = 0.95):
         ids_to_remove.add(dup_id)
 
     if ids_to_remove:
+        from qdrant_client.models import PointIdsList
         client.delete(
             collection_name=collection,
-            points_selector=list(ids_to_remove),
+            points_selector=PointIdsList(points=list(ids_to_remove)),
         )
         print(f"Removed {len(ids_to_remove)} duplicate points")
 
@@ -197,6 +202,7 @@ removed = remove_duplicates("my_collection", threshold=0.97)`,
     description:
       "Routes queries to the most relevant Qdrant collection based on intent classification.",
     tags: ["routing", "multi-collection", "intent"],
+    notebook: "",
     code: `import os
 from openai import OpenAI
 from qdrant_client import QdrantClient
